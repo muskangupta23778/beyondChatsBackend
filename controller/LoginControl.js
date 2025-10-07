@@ -43,9 +43,8 @@ async function login(req, res) {
     if (!passwordsMatch(parsed.password, user.password)) {
       return res.status(401).json({ message: 'Incorrect password' });
     }
-
     const token = jwt.sign({ id: user._id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
-    const { password: _pw, ...safe } = user.toObject();
+    const { password= _pw, ...safe } = user.toObject();
     return res.json({ token, user: safe });
   } catch (err) {
     return res.status(500).json({ message: 'Login failed', error: err.message });

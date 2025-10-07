@@ -16,13 +16,17 @@ app.get('/', (req, res) => {
 
 // auth routes
 const authRoutes = require('./routes/loginRoute');
-// const authMiddleware = require('./middleware/auth');
 app.use('/api/auth', authRoutes);
 
-// example protected route
-// app.get('/api/protected', authMiddleware, (req, res) => {
-//   res.json({ message: 'You are authorized', user: req.user });
-// });
+// activity routes
+const userActivityRoutes = require('./routes/userActivityRoute');
+app.use('/api', userActivityRoutes);
+
+// admin routes
+const adminRoutes = require('./routes/adminRoute');
+app.use('/apiAdmin', adminRoutes);
+
+// placeholder for protected routes using middleware in future
 
 async function start() {
   try {
