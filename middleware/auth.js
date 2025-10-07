@@ -36,6 +36,20 @@ function checkAdmin(req, res, next) {
   }
 }
 
-module.exports = { checkUser, checkAdmin };
+function checkUserOrAdmin(req, res, next) {
+  const token = getToken(req);
+  if (!token) return res.status(401).json({ message: 'Missing token' });
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    if (!payload || (payload.role !== 'user' && payload.role !== 'admin')) {
+      return res.status(403).json({ message: 'User or Admin access required' });
+    }
+    return next();
+  } catch (e) {
+    return res.status(401).json({ message: 'Invalid token' });
+  }
+}
+
+module.exports = { checkUser, checkAdmin, checkUserOrAdmin };
 
 
