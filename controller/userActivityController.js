@@ -3,7 +3,7 @@ const UserActivity = require('../model/userActivity');
 // POST /api/activity
 async function createUserActivity(req, res) {
   try {
-    const { email, result, attempt } = req.body || {};
+    const { email, result, attempt, name, strengths, weaknesses } = req.body || {};
 
     if (!email || !result) {
       return res.status(400).json({ message: 'email and result are required' });
@@ -22,11 +22,28 @@ async function createUserActivity(req, res) {
     } else {
       nextAttempt = 1;
     }
+    console.log("name", name);
+    console.log("strengths", strengths);
+    console.log("weaknesses", weaknesses);
+    const normalizedStrengths = Array.isArray(strengths)
+      ? strengths.map((s) => String(s).trim()).filter(Boolean).join(', ')
+      : strengths
+        ? String(strengths).trim()
+        : '';
+
+    const normalizedWeaknesses = Array.isArray(weaknesses)
+      ? weaknesses.map((w) => String(w).trim()).filter(Boolean).join(', ')
+      : weaknesses
+        ? String(weaknesses).trim()
+        : '';
 
     const doc = await UserActivity.create({
+      name: name ? String(name).trim() : '',
       email: normalizedEmail,
       result: String(result).trim(),
       attempt: nextAttempt,
+      strengths: normalizedStrengths,
+      weaknesses: normalizedWeaknesses,
     });
 
     return res.status(201).json({ activity: doc });

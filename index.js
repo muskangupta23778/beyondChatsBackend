@@ -18,8 +18,8 @@ app.get('/', (req, res) => {
 });
 
 // auth routes
-const authRoutes = require('./routes/loginRoute');
-app.use('/api/auth', authRoutes);
+const loginRoutes = require('./routes/loginRoute');
+app.use('/api/auth', loginRoutes);
 
 // activity routes
 const userActivityRoutes = require('./routes/userActivityRoute');

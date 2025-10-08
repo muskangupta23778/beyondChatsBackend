@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 
 const userActivitySchema = new mongoose.Schema(
   {
+    name: { type: String, trim: true, default: '' },
     email: {
       type: String,
       required: true,
@@ -11,6 +12,8 @@ const userActivitySchema = new mongoose.Schema(
     },
     result: { type: String, required: true, trim: true },
     attempt: { type: Number, required: true, min: 0 },
+    strengths: { type: String, trim: true, default: '' },
+    weaknesses: { type: String, trim: true, default: '' },
   },
   { timestamps: true }
 );
